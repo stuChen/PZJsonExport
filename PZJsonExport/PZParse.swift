@@ -156,7 +156,7 @@ class PZParse {
 				 tmpString.append("\n@implementation \(prefix + className.capitalizingFirstLetter())\n")
 			}
             if let mappingClassName = jsonInfo.mappingTable[className] {
-                tmpString.append("\n+ (NSDictionary *)objectClassInArray {\n \treturn @{@\"\(mappingClassName)\" : [\(prefix + mappingClassName.capitalizingFirstLetter()) class]};\n}\n")
+                tmpString.append("\n+ (NSDictionary *)mj_objectClassInArray {\n \treturn @{@\"\(mappingClassName)\" : [\(prefix + mappingClassName.capitalizingFirstLetter()) class]};\n}\n")
             }
             if let mappingKeywords = jsonInfo.mappingKeywordsTable[className] {
                 tmpString.append("\n+ (NSDictionary *)mj_replacedKeyFromPropertyName {\n \treturn @{\(mappingKeywords.map{$0+","}.reduce("", +))};\n}\n")
@@ -222,14 +222,16 @@ fileprivate extension PZParse {
                 qualifier = "copy"
                 type = "NSString *"
             case .number:
-                qualifier = "assign"
-                let tmpNumber:NSNumber = subJson.numberValue
-                if  String(cString: tmpNumber.objCType) == "d" ||
-                    String(cString: tmpNumber.objCType) == "f" {
-                    type = "CGFloat"
-                } else {
-                    type = "NSInteger"
-                }
+//                qualifier = "assign"
+//                let tmpNumber:NSNumber = subJson.numberValue
+//                if  String(cString: tmpNumber.objCType) == "d" ||
+//                    String(cString: tmpNumber.objCType) == "f" {
+//                    type = "CGFloat"
+//                } else {
+//                    type = "NSInteger"
+//                }
+                qualifier = "copy"
+                type = "NSNumber *"
             case .bool:
                 qualifier = "assign"
                 type = "BOOL"
